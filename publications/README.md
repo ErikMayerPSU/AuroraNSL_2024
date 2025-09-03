@@ -19,5 +19,5 @@ https://digitalcommons.pittstate.edu/ai-posters-2025/3
 * Mayer, Erik, "Neural network curriculum development and student research in Electronics Engineering Technology" (2025). Posters. 5.
 https://digitalcommons.pittstate.edu/ai-posters-2025/5
 
-#### Poster presentations for 2025 Aster/LSAMP(sp?) at University of Kansas in Lawrence, KS, ?, ?, 2025
+#### Poster presentation for 2025 Aster/LSAMP(sp?) at University of Kansas in Lawrence, KS, ?, ?, 2025
 
