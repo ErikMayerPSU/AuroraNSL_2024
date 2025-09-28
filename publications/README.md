@@ -8,17 +8,17 @@ https://github.com/ErikMayerPSU/AuroraNSL_2024/blob/main/publications/neurosymbo
 
 #### Poster presentation for 2025 PSU Research Colloquium at Pittsburg State University in Pittsburg, KS, April 10, 2025
 
-* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Estevan Hernandez, Tao Wu, Hongsheng He, Elizabeth MacDonald, Erik Mayer, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, 2025 PSU Research Colloquium, Pittsburg, KS, April 10, 2025.
+* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Dr. Erik Mayer, Pittsburg State University, Estevan Hernandez, Black & Veatch, Dr. Tao Wu, Bethel University, Dr. Hongsheng He, University of Alabama, and Dr. Elizabeth MacDonald, Goddard Space Flight Center, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, 2025 PSU Research Colloquium, Pittsburg, KS, April 10, 2025.
 https://digitalcommons.pittstate.edu/rcolloquium_event/2025/Posters/15/
 
 #### Poster presentations for 2025 AI Symposium at Pittsburg State University in Pittsburg, KS, ?, ?, 2025
 
-* Granadeno, Jhonatan; Luton, Jacob; Ty Woolven; Mayer, Erik; Hernandez, Estevan; Wu, Tao; He, Hongsheng; and MacDonald, Elizabeth, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ?, Pittsburg, KS, April ?, 2025.
+* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Dr. Erik Mayer, Pittsburg State University, Estevan Hernandez, Black & Veatch, Dr. Tao Wu, Bethel University, Dr. Hongsheng He, University of Alabama, and Dr. Elizabeth MacDonald, Goddard Space Flight Center, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ?, Pittsburg, KS, April ?, 2025.
 https://digitalcommons.pittstate.edu/ai-posters-2025/3
 
 * Mayer, Erik, "Neural network curriculum development and student research in Electronics Engineering Technology" (2025). Posters. 5.
 https://digitalcommons.pittstate.edu/ai-posters-2025/5
 
 #### Poster presentation for ASTER Louis Stokes Alliance for Minority Participation (LSAMP) First Annual Research Symposium at University of Kansas in Lawrence, KS, April, 26, 2025
-* Granadeno, Jhonatan; Luton, Jacob; Ty Woolven Mayer, Erik; Hernandez, Estevan; Wu, Tao; He, Hongsheng; and MacDonald, Elizabeth, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ASTER Louis Stokes Alliance for Minority Participation (LSAMP) First Annual Research Symposium, Lawrence, KS, April 26, 2025.
+* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Dr. Erik Mayer, Pittsburg State University, Estevan Hernandez, Black & Veatch, Dr. Tao Wu, Bethel University, Dr. Hongsheng He, University of Alabama, and Dr. Elizabeth MacDonald, Goddard Space Flight Center, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ASTER Louis Stokes Alliance for Minority Participation (LSAMP) First Annual Research Symposium, Lawrence, KS, April 26, 2025.
 
