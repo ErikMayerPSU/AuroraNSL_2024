@@ -19,6 +19,6 @@ https://digitalcommons.pittstate.edu/ai-posters-2025/3
 * Mayer, Erik, "Neural network curriculum development and student research in Electronics Engineering Technology," Poster presentation, 2025 AI Symposium: AI in Academia and the Workforce: Exploring the Impact and Implications, Pittsburg, KS, April 22, 2025.
 https://digitalcommons.pittstate.edu/ai-posters-2025/5
 
-#### Poster presentation for ASTER Louis Stokes Alliance for Minority Participation (LSAMP) First Annual Research Symposium at University of Kansas in Lawrence, KS, April, 26, 2025
-* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Dr. Erik Mayer, Pittsburg State University, Estevan Hernandez, Black & Veatch, Dr. Tao Wu, Bethel University, Dr. Hongsheng He, University of Alabama, and Dr. Elizabeth MacDonald, Goddard Space Flight Center, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ASTER Louis Stokes Alliance for Minority Participation (LSAMP) First Annual Research Symposium, Lawrence, KS, April 26, 2025.
-
+#### Poster presentation for ASTER (Aligning STEM Trainees for Enterprising Research) First Annual Research Symposium at University of Kansas in Lawrence, KS, April, 26, 2025
+* Jhonatan Granadeno, Jacob Luton, Ty Woolven, Dr. Erik Mayer, Pittsburg State University, Estevan Hernandez, Black & Veatch, Dr. Tao Wu, Bethel University, Dr. Hongsheng He, University of Alabama, and Dr. Elizabeth MacDonald, Goddard Space Flight Center, "Using the artificial intelligence technique of logic tensor networks to predict aurora borealis visibility," Poster presentation, ASTER (Aligning STEM Trainees for Enterprising Research) First Annual Research Symposium, Lawrence, KS, April 26, 2025.
+https://aster.ku.edu/
