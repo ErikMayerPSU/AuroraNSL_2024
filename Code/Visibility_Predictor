@@ -1,0 +1,184 @@
+pip install aacgmv2 tensorflow scikit-learn pandas numpy
+
+
+
+
+import pandas as pd
+import numpy as np
+import aacgmv2
+from datetime import datetime #required for coordinate conversion
+import tensorflow as tf
+from sklearn.preprocessing import StandardScaler #sklearn aids in model training
+from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
+from sklearn.utils import resample
+from sklearn.utils.class_weight import compute_class_weight
+
+
+
+
+#Load and Prepare Data
+print("Loading and preparing data...")
+
+reports_url = "https://raw.githubusercontent.com/ErikMayerPSU/AuroraNSL_2024/main/Code/2015_web_observations_cleaned.csv"
+reports = pd.read_csv(reports_url, encoding="latin1", on_bad_lines="skip")
+
+eflux_url = "https://raw.githubusercontent.com/ErikMayerPSU/AuroraNSL_2024/main/data/St%20patrick's%20day%202015/Eflux/20150318_0200UT_Eflux_e%2Call.txt"
+eflux = pd.read_csv(eflux_url, sep=r'\s+', names=["MLT", "ML", "eflux"], skiprows=1, nrows=7680)
+
+fixed_time = pd.to_datetime("2015-03-18 00:00:00", utc=True)
+
+# Clean (drop na values)
+reports = reports.dropna(subset=["st_y", "st_x", "time_start", "see_aurora"])
+reports = reports[reports["see_aurora"].isin(["t", "f"])]
+reports["time_start"] = pd.to_datetime(reports["time_start"], utc=True, errors='coerce')
+reports = reports.dropna(subset=["time_start"])
+reports = reports[abs(reports["st_y"]) > 20]  # Remove equatorial reports
+
+
+
+
+# NEW: Filter to just one day
+
+print("\nFilter reports to one day? (format: YYYY-MM-DD)")
+day_input = input("Enter date (e.g. 2015-03-18) or press Enter for ALL days: ").strip()
+
+if day_input:
+    try:
+        chosen_day = pd.to_datetime(day_input, utc=True)
+        start_of_day = chosen_day.replace(hour=0, minute=0, second=0)
+        end_of_day   = start_of_day + pd.Timedelta(days=1)
+
+        reports = reports[
+            (reports["time_start"] >= start_of_day) &
+            (reports["time_start"] < end_of_day)
+        ].copy()
+        print(f"Filtered to {len(reports)} reports on {chosen_day.date()}")
+    except Exception as e:
+        print(f"Invalid date format. Using ALL reports. ({e})")
+else:
+    print("No date entered → using ALL reports across the storm")
+
+# Assign E-flux safely, finds nearest eflux values for given reports then assigns eflux value for report
+print("\nAssigning E-flux (10-30 sec)...")
+eflux_vals = []
+for _, row in reports.iterrows():
+    try:
+        mlat, _, mlt = aacgmv2.get_aacgm_coord(row.st_y, row.st_x, 110, fixed_time)
+        if np.isnan(mlat) or np.isnan(mlt):
+            eflux_vals.append(0.0)
+            continue
+        distances = np.sqrt((eflux.MLT - mlt)**2 + (eflux.ML - mlat)**2)
+        idx = distances.idxmin()
+        nearest = 0.0 if pd.isna(idx) else eflux.iloc[idx]["eflux"]
+        eflux_vals.append(nearest)
+    except:
+        eflux_vals.append(0.0)
+
+reports["eflux"] = eflux_vals
+reports["seen"] = (reports.see_aurora == "t").astype(int)
+
+
+
+
+
+# Balance the data, less unseen than seen
+seen = reports[reports.seen == 1]
+not_seen = reports[reports.seen == 0]
+
+print(f"Before balancing: Seen = {len(seen)}, Not Seen = {len(not_seen)}")
+
+not_seen_upsampled = resample(not_seen, replace=True, n_samples=len(seen), random_state=42)
+balanced_reports = pd.concat([seen, not_seen_upsampled])
+
+print(f"After balancing: Total = {len(balanced_reports)} (50/50 split)")
+
+# Prepare for training
+X = balanced_reports[["eflux"]].values
+y = balanced_reports["seen"].values
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+class_weights = compute_class_weight('balanced', classes=np.array([0,1]), y=y)
+class_weight_dict = {0: class_weights[0], 1: class_weights[1]}
+
+
+
+
+# Model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(32, activation="relu", input_shape=(1,)),
+    tf.keras.layers.Dense(16, activation="relu"),
+    tf.keras.layers.Dense(1, activation="sigmoid")
+])
+
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+
+print("\n" + "="*60)
+print("TRAINING BALANCED MODEL")
+print("="*60)
+
+history = model.fit(X_scaled, y,
+                    epochs=500,
+                    batch_size=32,
+                    validation_split=0.2,
+                    class_weight=class_weight_dict,
+                    verbose=1)
+
+
+
+
+model.summary()
+
+
+
+
+
+# Evaluation
+pred_prob = model.predict(X_scaled, verbose=0).flatten()
+pred_class = (pred_prob > 0.5).astype(int)
+
+print("\n" + "="*60)
+print("FINAL RESULTS")
+print("="*60)
+print(f"Accuracy: {accuracy_score(y, pred_class):.3f}")
+print(f"AUC-ROC: {roc_auc_score(y, pred_prob):.3f}")
+print("\nClassification Report:")
+print(classification_report(y, pred_class, target_names=["Not Seen", "Seen"]))
+
+# Predictions
+print("\n" + "-"*50)
+print("PREDICTION EXAMPLES")
+print("-"*50)
+example_eflux = np.array([[1.0], [3.0], [5.0], [8.0]])
+example_scaled = scaler.transform(example_eflux)
+probs = model.predict(example_scaled, verbose=0).flatten()
+
+for e, p in zip(example_eflux.flatten(), probs):
+    print(f"E-flux = {e:.1f} mW/m² → Chance: {p*100:.1f}%")
+
+# This will output a classification report:
+
+# Precision: When predicting the class, how often was it correct?
+  ## High = few false alarms
+
+#Recall: how many actual instances of this class was caught?
+  ## High = few misses
+
+#F1-Score: Balance between Recall and Precision
+#Accuracy: Overall correctness
+#Support: Number of actual instances
+#Macro avg: Averages metrics for all classes
+#weighted: averages weighted by support
+
+
+
+
+
+#New save processed data to CSV, saved to current working directory
+print("\nSaving processed training data to 'aurora_training_data.csv'...")
+save_data = balanced_reports.copy()
+save_data["probability"] = pred_prob  # Add model confidence
+save_data = save_data[["st_y", "st_x", "time_start", "see_aurora", "eflux", "seen", "probability"]]
+save_data.to_csv("aurora_training_data.csv", index=False)
+print("Saved! File contains: latitude, longitude, time, original label, E-flux, seen (0/1), and model probability.")
