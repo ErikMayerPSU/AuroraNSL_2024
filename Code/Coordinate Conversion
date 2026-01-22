@@ -1,0 +1,55 @@
+##Python script for converting coordinates from a csv, will save output to csv
+#-----------------------------------------------------------------------------
+
+import aacgmv2
+import pandas as pd
+
+
+# Reading CSV file
+data = pd.read_csv(r"C:\Users\jhona\PycharmProjects\PythonProject\CSV extraction test\data.csv", encoding="latin1")
+
+# Converting column data from CSV to lists
+xcoords = data['st_x'].tolist()
+ycoords = data['st_y'].tolist()
+date_time = pd.to_datetime(data['time_start'])  #Store date and time in a variable
+
+# Function to convert coordinates (Geo to AACGM)
+def convert_to_aacgm(geo_lat, geo_lon, altitude, dtime):
+    aacgm_lat, aacgm_lon, aacgm_r = aacgmv2.wrapper.convert_latlon(
+        geo_lat, geo_lon, altitude, dtime, method_code='G2A'
+    )
+    return aacgm_lat, aacgm_lon, aacgm_r
+
+# Lists to store results
+aacgm_latitudes = []
+aacgm_longitudes = []
+aacgm_radii = []
+mlt_values = []
+
+# Convert each coordinate with corresponding time
+for lat, lon, time in zip(ycoords, xcoords, date_time):
+    out_lat, out_lon, out_r = convert_to_aacgm(lat, lon, 0, time)  #Assuming altitude = 0
+    aacgm_latitudes.append(out_lat)
+    aacgm_longitudes.append(out_lon)
+    aacgm_radii.append(out_r)
+
+    # Convert AACGM longitude to MLT
+    mlt = aacgmv2.convert_mlt(out_lon, time, m2a=False)
+    mlt_values.append(mlt)
+
+# Create CSV with the following information
+output_data = pd.DataFrame({
+    "Geo_Lon": xcoords,
+    "Geo_Lat": ycoords,
+    "Time": date_time,
+    "AACGM_Lat": aacgm_latitudes,
+    "AACGM_Lon": aacgm_longitudes,
+    "AACGM_Radius": aacgm_radii,
+    "MLT": mlt_values
+})
+
+# Save to CSV
+output_csv_path = r"C:\Users\jhona\PycharmProjects\PythonProject\CSV extraction test\converted_data.csv"
+output_data.to_csv(output_csv_path, index=False, encoding="utf-8")
+
+print(f"Converted data saved to {output_csv_path}")
